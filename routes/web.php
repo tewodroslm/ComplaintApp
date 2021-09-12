@@ -20,17 +20,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('homei');
-Route::get('/test', function(){
-    return view('welcome');
-})->name('test');
-
-Route::group(['middleware' => ['auth']], function(){
-    Route::resource('roles', RoleController::class);
-    Route::resource('users', UserController::class);
-    Route::resource('complaint', ComplaintContrller::class);
-    Route::get('/test1', function(){
-        return view('welcome');
-    })->name('test1');
+ 
+Route::group(['middleware' => ['auth']], function(){  
+    Route::post('/createFeedback', [App\Http\Controllers\ComplaintController::class, 'create'])->name('createFeedback');
+    Route::get('/complaints', [App\Http\Controllers\ComplaintController::class, 'show'])->name('all-complaints');
 });
 
 

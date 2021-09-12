@@ -12,7 +12,7 @@
             @endif
             @if (Auth::user()->hasRole('Admin'))
                 <div class="card-header">
-                    <a class="btn btn-info">Complaints</a>
+                    <a class="btn btn-info">My complaints</a>
                 </div>
             @endif
             <div class="card-body">
@@ -28,49 +28,51 @@
 					<h1>Create Your ticket here.</h1>
 				</div>
 			</div>
-	
-			    <form @submit.prevent="postTicket">
 
-                    <div> 
-                        <div class="container fluid">
+
+            <form action="{{route('createFeedback')}}" enctype="multipart/form-data" method="POST">
+            @csrf
+                <div class="row">
+                    <div class="col-md-12">
+                       
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                            
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                            
+                        <div class="form-group">
+                            <label>Feed back</label> 
                             <textarea 
                                     rows="5%"
                                     cols="105%"
-                                    name="input-7-1" 
+                                    name="comment" 
+                                    require
                                 >
                             </textarea>
-                        </div> 
+                        </div>
+            
+                        <div class="form-group">
+                            <input type="file" name="file" placeholder="Choose file" id="file">
+                                @error('file')
+                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                @enderror
+                        </div>
                     </div>
-                    
-			    </form> 
+                        
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary" id="submit">Submit</button>
+                    </div>
+                </div>     
+            </form>
+	 
 			</div> 
 		</div>
-        <div class="container mt-4">
- 
-            <h3 class="text-center">Upload pdf.</h3>
-            
-                <form class="text-center" method="POST" enctype="multipart/form-data" id="upload-file" action="{{ url('store') }}" >
-                            
-                    <div class="row">
-            
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <input type="file" name="file" placeholder="Choose file" id="file">
-                                    @error('file')
-                                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                                    @enderror
-                            </div>
-                        </div>
-                            
-                        <div class="col-md-4 text-center mb-3" >
-                            <button type="submit" class=" btn btn-block btn-primary ">submit</button>
-                        </div> 
-                    </div>     
-                </form>
-            </div>
-                </div>
-            </div>
-        </div>
+         
     </div> 
 </div>
 @endsection
