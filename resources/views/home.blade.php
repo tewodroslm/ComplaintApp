@@ -5,18 +5,23 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+            @if (Auth::user()->hasRole('basic'))
                 <div class="card-header">
                     <a class="btn btn-info">My feedbacks</a>
                 </div>
-
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
- 
-                    <div>
+            @endif
+            @if (Auth::user()->hasRole('Admin'))
+                <div class="card-header">
+                    <a class="btn btn-info">Complaints</a>
+                </div>
+            @endif
+            <div class="card-body">
+                @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+                @endif
+            <div>
 		<div class="myform form ">
 			<div class="logo mb-3">
 				<div class="col-md-12 text-center">
@@ -66,7 +71,6 @@
                 </div>
             </div>
         </div>
-    </div>
-   
+    </div> 
 </div>
 @endsection
