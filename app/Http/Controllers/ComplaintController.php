@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Complaint;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 class ComplaintController extends Controller
@@ -28,11 +29,13 @@ class ComplaintController extends Controller
         $id = $request->user()->id;
      
         if($request->hasFile('file')){ 
-            $request->file('file')->store('pdf', 'public');
+            $file = $request->file('file');
+            $file_name = $file->getClientOriginalName();
+            $request->file('file')->storeAs('public/pdf', $file_name);
             
             $complaint = new Complaint([
                 "comment" => $request->get('comment'),
-                "file_path" =>  $request->file('file')->getClientOriginalName(),
+                "file_path" => $file_name,
                 "user_id" => $id
             ]);
 
@@ -67,8 +70,11 @@ class ComplaintController extends Controller
 
     // show all complaint to admin
     public function showAll(Request $request){
-        $feedbacks = DB::table('complaints')
-                            ->get();
+        // $feedbacks = DB::table('complaints')
+        //                     ->get();
+        
+        $feedbacks = Complaint::latest()->paginate(5);
+
         return view('complaint', compact('feedbacks'))
                     ->with('i', (request()->input('page', 1) -1) * 5);
     }
@@ -78,8 +84,21 @@ class ComplaintController extends Controller
          
         $feedback = DB::table('complaints')
                         ->where('id', $request->id)->first();
-        dd($feedback);                        
-        return view('singlefeedback');
+        return view('showOne', compact('feedback'));
+    }
+
+    public function getPdf(Request $request){
+        $comp = DB::table('complaints')
+                    ->where('id', $request->id)->first();
+
+        $pdf = $comp->file_path;
+        
+        $pathToFile = (public_path().'/storage/pdf/'.$pdf);
+        // dd($pdf) ;
+        // return Storage::disk('public')->download($pathToFile, $pdf);
+        // return Storage::get($pathToFile);
+        return response()->file($pathToFile); 
+        // return view('kd');
     }
 
 }

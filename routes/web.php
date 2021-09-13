@@ -31,6 +31,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/allcomplaints', [App\Http\Controllers\ComplaintController::class, 'showAll'])->name('admin-all-complaints');
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('homei');
     Route::post('/feedback', [App\Http\Controllers\ComplaintController::class, 'showOne'])->name('feedback');
+    Route::post('/pdffile', [App\Http\Controllers\ComplaintController::class, 'getPdf'])->name('pdffile');
 });
 
 
