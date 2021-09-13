@@ -19,11 +19,16 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('homei');
- 
+
+Route::get('/test', function(){
+    return view('welcome');
+})->name('test');
+
 Route::group(['middleware' => ['auth']], function(){  
     Route::post('/createFeedback', [App\Http\Controllers\ComplaintController::class, 'create'])->name('createFeedback');
+    Route::get('/createFeedback', [App\Http\Controllers\ComplaintController::class, 'page'])->name('getFeedbackPage');
     Route::get('/complaints', [App\Http\Controllers\ComplaintController::class, 'show'])->name('all-complaints');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('homei');
 });
 
 

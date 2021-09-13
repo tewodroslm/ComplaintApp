@@ -7,7 +7,7 @@
             <div class="card">
             @if (Auth::user()->hasRole('basic'))
                 <div class="card-header">
-                    <a class="btn btn-info">My feedbacks</a>
+                    <a class="btn btn-info" href="{{ route('all-complaints') }}">My feedbacks</a>
                 </div>
             @endif
             @if (Auth::user()->hasRole('Admin'))

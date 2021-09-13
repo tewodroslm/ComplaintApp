@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Complaint;
+use Illuminate\Support\Facades\DB;
 
 class ComplaintController extends Controller
 {
+
+    public function page(){
+        return view('home');
+    }
     
     // Handle complaint controller
     public function create(Request $request){
@@ -46,11 +51,16 @@ class ComplaintController extends Controller
         return redirect('/complaints');
     }
   
-    public function show(){
+    public function show(Request $request){
         // $feedbacks = Complaint::latest()->paginate(5);
-        // return view('complaint',compact('feedbacks'))
-        //     ->with('i', (request()->input('page', 1) - 1) * 5);
-        return view('complaint');
+        $id = $request->user()->id;
+
+        $feedbacks =  DB::table('complaints')
+                            ->where('user_id', $id)->get();
+        // dd($feedbacks);
+        return view('complaint',compact('feedbacks'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
+        // return view('complaint');
     }
 
 }
