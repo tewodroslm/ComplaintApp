@@ -12,7 +12,7 @@
             @endif
             @if (Auth::user()->hasRole('Admin'))
                 <div class="card-header">
-                    <a class="btn btn-info">My complaints</a>
+                    <a class="btn btn-info" href="{{ route('admin-all-complaints') }}">Feedbacks</a>
                 </div>
             @endif
             <div class="card-body">

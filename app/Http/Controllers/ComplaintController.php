@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 class ComplaintController extends Controller
 {
 
+    // show form page
     public function page(){
         return view('home');
     }
@@ -51,6 +52,7 @@ class ComplaintController extends Controller
         return redirect('/complaints');
     }
   
+    // show user specific complaint
     public function show(Request $request){
         // $feedbacks = Complaint::latest()->paginate(5);
         $id = $request->user()->id;
@@ -60,7 +62,24 @@ class ComplaintController extends Controller
         // dd($feedbacks);
         return view('complaint',compact('feedbacks'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
-        // return view('complaint');
+        
+    }
+
+    // show all complaint to admin
+    public function showAll(Request $request){
+        $feedbacks = DB::table('complaints')
+                            ->get();
+        return view('complaint', compact('feedbacks'))
+                    ->with('i', (request()->input('page', 1) -1) * 5);
+    }
+
+    // show single feedback
+    public function showOne(Request $request){
+         
+        $feedback = DB::table('complaints')
+                        ->where('id', $request->id)->first();
+        dd($feedback);                        
+        return view('singlefeedback');
     }
 
 }

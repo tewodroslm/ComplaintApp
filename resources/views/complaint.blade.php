@@ -25,13 +25,19 @@
                 <td>{{ ++$i }}</td>
                 <td>{{ $complaint->comment }}</td> 
                 <td>                        
-                    @can('complaint-edit')
+                    @if (Auth::user()->hasRole('basic'))
                     <a class="btn btn-primary">Edit feedback</a>
-                    @endcan
+                    @endif
 
                     @can('user-edit')
                     <a class="btn btn-primary">User Status</a>
                     @endcan
+                </td>
+                <td>
+                    {{ Form::open(array('url' => 'feedback')) }}
+                    {{ Form::hidden('id',  $complaint->id); }}
+                    {{ Form::submit('Show'); }}
+                    {{ Form::close() }} 
                 </td>
             </tr>
             @endforeach
