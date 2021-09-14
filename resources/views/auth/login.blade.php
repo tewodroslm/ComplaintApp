@@ -50,7 +50,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group mt-4">
+                            {!! NoCaptcha::renderJs('am', false, 'onloadCallback') !!}
 
+                            {!! NoCaptcha::display() !!}
+                        </div>
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
@@ -71,3 +75,9 @@
     </div>
 </div>
 @endsection
+
+<script type="text/javascript">
+  var onloadCallback = function() {
+    alert("grecaptcha is ready!");
+  };
+</script>
