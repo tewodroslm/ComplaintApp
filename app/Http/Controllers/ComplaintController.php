@@ -108,22 +108,24 @@ class ComplaintController extends Controller
                                     'comment' => 'required',
                                     'pdf' => 'mimes:pdf|max:10000']);
         $id = $request->user()->id;
-        $complaint = Complaint::find($request->id);
+        $feedback =  Complaint::where('id', $request->complaintid)->first();
+        
         
         if($request->hasFile('file')){ 
             $file = $request->file('file');
             $file_name = $file->getClientOriginalName();
             $request->file('file')->storeAs('public/pdf', $file_name);
              
-            $complaint->file_path = $file_name; 
-            
+            $feedback->file_path = $file_name; 
+
         }
-        $complaint->comment = $request->comment;
-        $complaint->user_id = $id;
 
-        $complaint->save();
+        $feedback->comment = $request->comment;
+        $feedback->user_id = $id;
 
-        return redirect('showOne', compact('feedback'));
+        $feedback->save();
+ 
+        return view('showOne', compact('feedback'));
     }
 
 }

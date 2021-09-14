@@ -67,7 +67,7 @@
                                 @enderror
                         </div>
                     </div>
-                        
+                        <input type="hidden" name="complaintid" value="{{ $complaint->id ?? ''  }}">
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary" id="submit">Submit</button>
                     </div>
