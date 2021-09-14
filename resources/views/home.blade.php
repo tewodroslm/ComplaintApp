@@ -29,30 +29,34 @@
 				</div>
 			</div>
 
-
+            @if(!isset($complaint))
             <form action="{{route('createFeedback')}}" enctype="multipart/form-data" method="POST">
-            @csrf
+            @else
+            <form action="{{route('update-complaint')}}" enctype="multipart/form-data" method="POST">             
+            @endif
+                       @csrf
                 <div class="row">
                     <div class="col-md-12">
                        
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" class="form-control" name="name" required>
+                            <input type="text" class="form-control" name="name" value="{{ $username ?? '' }}" required>
                         </div>
                             
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" class="form-control" name="email" required>
+                            <input type="email" class="form-control" name="email" value="{{ $useremail ?? '' }}" required>
                         </div>
-                            
+                       
                         <div class="form-group">
                             <label>Feed back</label> 
                             <textarea 
                                     rows="5%"
                                     cols="105%"
-                                    name="comment" 
+                                    name="comment"  
                                     require
                                 >
+                                {{ $complaint->comment ?? '' }}
                             </textarea>
                         </div>
             

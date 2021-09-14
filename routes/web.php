@@ -34,7 +34,7 @@ Route::group(['middleware' => ['auth']], function(){
     Route::post('/pdffile', [App\Http\Controllers\ComplaintController::class, 'getPdf'])->name('pdffile');
 
     Route::post('/edit-complaint', [App\Http\Controllers\ComplaintController::class, 'editComplaintForm'])->name('edit-complaint-form');
-    Route::get('/update-complaint', [App\Http\Controllers\ComplaintController::class, 'updateComplaint'])->name('update-complaint');
+    Route::post('/update-complaint', [App\Http\Controllers\ComplaintController::class, 'updateComplaint'])->name('update-complaint');
 });
 
 

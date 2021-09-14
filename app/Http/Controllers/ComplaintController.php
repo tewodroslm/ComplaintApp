@@ -61,8 +61,7 @@ class ComplaintController extends Controller
         $id = $request->user()->id;
  
         $feedbacks = Complaint::where('user_id', $id)->paginate(5);
-        
-        // dd($feedbacks);
+         
         return view('complaint',compact('feedbacks'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
         
@@ -92,14 +91,39 @@ class ComplaintController extends Controller
         $pdf = $comp->file_path;
         
         $pathToFile = (public_path().'/storage/pdf/'.$pdf);
-        // dd($pdf) ;
          
         return response()->file($pathToFile);  
     }
 
     public function editComplaintForm(Request $request){
         $complaint = Complaint::where('id', $request->id)->first();
-        return view('updatecomplaint');
+        $username = $request->user()->name;
+        $useremail = $request->user()->email;
+        return view('home', $complaint)->with(compact('complaint', $complaint))->with('username', $username)->with('useremail', $useremail);
+    }
+
+    public function updateComplaint(Request $request){
+        $this->validate($request, ['name' => 'required',
+                                    'email' => 'required|email',
+                                    'comment' => 'required',
+                                    'pdf' => 'mimes:pdf|max:10000']);
+        $id = $request->user()->id;
+        $complaint = Complaint::find($request->id);
+        
+        if($request->hasFile('file')){ 
+            $file = $request->file('file');
+            $file_name = $file->getClientOriginalName();
+            $request->file('file')->storeAs('public/pdf', $file_name);
+             
+            $complaint->file_path = $file_name; 
+            
+        }
+        $complaint->comment = $request->comment;
+        $complaint->user_id = $id;
+
+        $complaint->save();
+
+        return redirect('showOne', compact('feedback'));
     }
 
 }
