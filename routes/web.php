@@ -32,6 +32,9 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('homei');
     Route::post('/feedback', [App\Http\Controllers\ComplaintController::class, 'showOne'])->name('feedback');
     Route::post('/pdffile', [App\Http\Controllers\ComplaintController::class, 'getPdf'])->name('pdffile');
+
+    Route::post('/edit-complaint', [App\Http\Controllers\ComplaintController::class, 'editComplaintForm'])->name('edit-complaint-form');
+    Route::get('/update-complaint', [App\Http\Controllers\ComplaintController::class, 'updateComplaint'])->name('update-complaint');
 });
 
 

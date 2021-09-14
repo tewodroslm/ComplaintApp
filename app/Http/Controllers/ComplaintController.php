@@ -59,9 +59,9 @@ class ComplaintController extends Controller
     public function show(Request $request){
         // $feedbacks = Complaint::latest()->paginate(5);
         $id = $request->user()->id;
-
-        $feedbacks =  DB::table('complaints')
-                            ->where('user_id', $id)->get();
+ 
+        $feedbacks = Complaint::where('user_id', $id)->paginate(5);
+        
         // dd($feedbacks);
         return view('complaint',compact('feedbacks'))
             ->with('i', (request()->input('page', 1) - 1) * 5);
@@ -69,9 +69,7 @@ class ComplaintController extends Controller
     }
 
     // show all complaint to admin
-    public function showAll(Request $request){
-        // $feedbacks = DB::table('complaints')
-        //                     ->get();
+    public function showAll(Request $request){ 
         
         $feedbacks = Complaint::latest()->paginate(5);
 
@@ -95,10 +93,13 @@ class ComplaintController extends Controller
         
         $pathToFile = (public_path().'/storage/pdf/'.$pdf);
         // dd($pdf) ;
-        // return Storage::disk('public')->download($pathToFile, $pdf);
-        // return Storage::get($pathToFile);
-        return response()->file($pathToFile); 
-        // return view('kd');
+         
+        return response()->file($pathToFile);  
+    }
+
+    public function editComplaintForm(Request $request){
+        $complaint = Complaint::where('id', $request->id)->first();
+        return view('updatecomplaint');
     }
 
 }

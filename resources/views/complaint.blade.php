@@ -26,9 +26,13 @@
                 <td>{{ $complaint->comment }}</td> 
                 <td>                        
                     @if (Auth::user()->hasRole('basic'))
-                    <a class="btn btn-primary">Edit feedback</a>
+                    <div>
+                        {{ Form::open([ 'route' => 'edit-complaint-form' ]) }}
+                        {{ Form::hidden('id',  $complaint->id); }}
+                        {{ Form::submit('Edit feedback',array('class' => 'btn btn-info')); }}
+                        {{ Form::close() }} 
+                    </div>
                     @endif
-
                     @can('user-edit')
                     <a class="btn btn-primary">User Status</a>
                     @endcan
