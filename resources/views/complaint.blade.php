@@ -26,21 +26,32 @@
                 <td>{{ $complaint->comment }}</td> 
                 <td>                        
                     @if (Auth::user()->hasRole('basic'))
+                    @if (Auth::user()->active !== 'No')
                     <div>
                         {{ Form::open([ 'route' => 'edit-complaint-form' ]) }}
                         {{ Form::hidden('id',  $complaint->id); }}
                         {{ Form::submit('Edit feedback',array('class' => 'btn btn-info')); }}
                         {{ Form::close() }} 
                     </div>
+                    @elseif(Auth::user()->active === 'No')
+                    <div>
+                        <a class='btn btn-info'> Your account has been suspended</a>
+                    </div>
+                    @endif
                     @endif
                     @can('user-edit')
-                    <a class="btn btn-primary">User Status</a>
+                    <a>
+                        {{ Form::open([ 'route' => 'get-disable-account' ]) }}
+                        {{ Form::hidden('id',  $complaint->id); }}
+                        {{ Form::submit('User status', ['class' => 'btn btn-primary']); }}
+                        {{ Form::close() }}
+                    </a>
                     @endcan
                 </td>
                 <td>
                     {{ Form::open(array('url' => 'feedback')) }}
                     {{ Form::hidden('id',  $complaint->id); }}
-                    {{ Form::submit('Show'); }}
+                    {{ Form::submit('Show', ['class' => 'btn btn-primary']); }}
                     {{ Form::close() }} 
                 </td>
             </tr>

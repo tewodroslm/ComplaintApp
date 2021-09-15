@@ -3,21 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class UserController extends Controller
 {
     
+    public function getDisableAccount(Request $request){
+
+        $feedback = DB::table('complaints')
+                        ->where('id', $request->id)->first();
+        
+        $user = User::where('id', $feedback->user_id)->first();
+
+        return view('userstatus', compact('user'));
+    }
+
     // Moderator disable member account
-    public function disableAccount($id){ 
+    public function disableAccount(Request $request){ 
     
-        $user = User::find($id);
-        $user->update(["active" => "No"]);
-        DB::table('model_has_roles')->where('model_id',$id)->delete();
-    
-        $user->assignRole($request->input('roles'));
-    
-        return redirect()->route('users.index')
-                        ->with('success','User updated successfully');
+        $user = User::where('id',$request->id)->first();
+        $user->active = "No";
+        $user->save();
+        dd($user);
+
+        return redirect('home');
     }
 
     // Create admin

@@ -28,7 +28,7 @@
 					<h1>Create Your ticket here.</h1>
 				</div>
 			</div>
-
+            @if (Auth::user()->active !== 'No')
             @if(!isset($complaint))
             <form action="{{route('createFeedback')}}" enctype="multipart/form-data" method="POST">
             @else
@@ -73,7 +73,11 @@
                     </div>
                 </div>     
             </form>
-	 
+            @elseif(Auth::user()->active === 'No')
+            <div>
+                <h3> Your account has been suspended</h3>
+            </div>
+            @endif
 			</div> 
 		</div>
          
